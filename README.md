@@ -28,7 +28,7 @@ This module supports the following functionalities:
  * Config creation and deletion
  * Addition and Removal of Zones from Config
  * Activation and De-Activation of Config
- 
+
 
 ## Requirements
 Because the Puppet agent cannot be directly installed on the Brocade Fabric OS, the agent can be managed either from the Puppet Master server,
@@ -53,24 +53,23 @@ Sample configuration `/etc/puppet/device/brocade_fos1.example.com.conf`:
 
 ### Brocade FOS operations
 This module can be used to create or delete an alias,add/remove member to/from alias, create or delete a zone, add/remove member to/from a zone, create or delete config, activate or de-activate config.
-For example: 
+For example:
 
-   brocade_member_alias { 'demoAlias':
-    name   => 'demoAlias:50:00:d3:10:00:5e:c4:ad;50:00:d3:10:00:5e:c4:ac'
-    ensure => 'present'
-  }
+    brocade_member_alias { 'demoAlias':
+      name   => 'demoAlias:50:00:d3:10:00:5e:c4:ad;50:00:d3:10:00:5e:c4:ac'
+      ensure => 'present'
+    }
 
-  brocade_zone { 'demozone':
-    ensure => 'present',
-    member => 'demoAlias'
-  }
+    brocade_zone { 'demozone':
+      ensure => 'present',
+      member => 'demoAlias'
+    }
 
- brocade_config { 'democonfig':
-   ensure => 'present',
-   member_zone => 'demozone',
-   configstate => 'disable',
-  }
-
+    brocade_config { 'democonfig':
+      ensure => 'present',
+      member_zone => 'demozone',
+      configstate => 'disable',
+    }
 
 This creates an alias for the members, adds the alias to a zone, and then adds the zone to the config (in de-activation mode) as per defined input parameters.
 
