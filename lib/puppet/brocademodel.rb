@@ -1,5 +1,6 @@
-module PuppetX::Brocade::ModelValues
-  MODEL_MAP = {
+module Puppet::Brocademodel
+
+  MODEL_HASH = {
     '2.x' => 'Brocade 2010',
     '3.x' => 'Brocade 2400',
     '6.x' => 'Brocade 2800',
@@ -32,5 +33,6 @@ module PuppetX::Brocade::ModelValues
     '121.x' => 'Brocade DCX8510-4',
     '120.x' => 'Brocade DCX8510-8',
     '109.x' => 'Brocade 6510'
+         
    }
 end

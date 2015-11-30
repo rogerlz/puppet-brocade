@@ -28,7 +28,7 @@ module Puppet::Type::Brocade_messages
   end
 
   def special_char_check(value, error)
-    if ( value =~ /[\W]+/ )
+    if ( value =~ /[^a-zA-Z0-9_\*]+/ )
       raise ArgumentError, error
     end
   end

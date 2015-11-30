@@ -1,7 +1,7 @@
 require 'tsort'
 
 # Utility class for sorting
-class PuppetX::Brocade::Sorter
+class Puppet::Util::NetworkDevice::Sorter
 
   include TSort
   def initialize(param)

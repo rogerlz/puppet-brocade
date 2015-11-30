@@ -1,5 +1,5 @@
 # Method Value Helper Module
-module PuppetX::Brocade::ValueHelper
+module Puppet::Util::NetworkDevice::ValueHelper
   def define_value_method(methods)
     methods.each do |meth|
       define_method(meth) do |*args, &block|

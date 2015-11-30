@@ -1,8 +1,8 @@
-require 'puppet_x/brocade/sorter'
+require 'puppet/util/network_device'
+require 'puppet/util/network_device/sorter'
 
-#TODO: This Dsl module is (almost?) the exact same as the one in force10 module.  They should probably be consolidated/simplified somehow.
-#TODO:  At the very least, there's some (seemingly) unused methods.  It would be nice to go through and verify 100% they aren't being used and clean up if not.
-module PuppetX::Brocade::Dsl
+#This module provides various methods to register facts. It overrides retrieve method.
+module Puppet::Util::NetworkDevice::Dsl
   def register_param(params, klass = nil, &block)
     # Make it so that we can register multiple Params at the same time
     # and assign every Param an index number that must match the Regex
@@ -49,7 +49,6 @@ module PuppetX::Brocade::Dsl
     @after_hooks[param] << {:mod => mod, :path_addition => path_addition, :block => block}
   end
 
-  #unused
   def register_new_module(mod, path_addition = "")
     @included_modules ||= []
     unless @included_modules.include?(mod)
@@ -64,9 +63,8 @@ module PuppetX::Brocade::Dsl
     end
   end
 
-  #unused
   def evaluate_new_params
-    PuppetX::Brocade::Sorter.new(@params).tsort.each do |param|
+    Puppet::Util::NetworkDevice::Sorter.new(@params).tsort.each do |param|
     #Skip if the param has already been evaluated
       next if param.evaluated
       if param.cmd != false
@@ -87,7 +85,6 @@ module PuppetX::Brocade::Dsl
     evaluate_new_params unless @params.each_value.select {|param| param.evaluated == false}.empty?
   end
 
-  #unused
   def checkparamhook(param)
     @after_hooks ||= {}
     if @after_hooks[param.name]
@@ -103,7 +100,6 @@ module PuppetX::Brocade::Dsl
     params_to_hash
   end
 
-  #unused
   # register a simple param using the specified regexp and commands
   def register_simple(param, match_re, fetch_cmd, cmd)
     register_param param do
@@ -118,16 +114,14 @@ module PuppetX::Brocade::Dsl
     end
   end
 
-  # FIXME:  This method is commented out, as it will literally break since Puppet::Util::NetworkDevice::Brocade_fos::Model::ModelValue doesn't exist.
-  # Looks unused, so can probably delete completely.
-  # # register a model based param
-  # def register_model(param, klass, match_re, fetch_cmd)
-  #   register_param param, Puppet::Util::NetworkDevice::Brocade_fos::Model::ModelValue do
-  #     model klass
-  #     match match_re
-  #     cmd fetch_cmd
-  #   end
-  # end
+  # register a model based param
+  def register_model(param, klass, match_re, fetch_cmd)
+    register_param param, Puppet::Util::NetworkDevice::Brocade_fos::Model::ModelValue do
+      model klass
+      match match_re
+      cmd fetch_cmd
+    end
+  end
 
   # register a simple yes/no param. the regexp must match if the param is present
   def register_bool(param, match_re, fetch_cmd, cmd)
@@ -149,7 +143,6 @@ module PuppetX::Brocade::Dsl
     end
   end
 
-  #unused
   # register a simple array-valued param
   # transform the array using a block if necessary
   def register_array(param, match_re, fetch_cmd, cmd, &block)

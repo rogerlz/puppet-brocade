@@ -1,9 +1,10 @@
-require 'puppet_x/brocade/value_helper'
+require 'puppet/util/network_device/brocade_fos'
+require 'puppet/util/network_device/value_helper'
 
 #This class provides generic method to parse the fact from command output
-class PuppetX::Brocade::Fact
+class Puppet::Util::NetworkDevice::Brocade_fos::Fact
   attr_accessor :name, :idx, :value, :evaluated
-  extend PuppetX::Brocade::ValueHelper
+  extend Puppet::Util::NetworkDevice::ValueHelper
   def initialize(name, transport, facts = nil, idx = 0, &block)
     @name = name
     @idx = idx
@@ -16,13 +17,11 @@ class PuppetX::Brocade::Fact
 
   def parse(txt)
     if self.match.is_a?(Proc)
-      self.value = self.match.call(txt)
+    self.value = self.match.call(txt)
     else
-      self.value = txt.scan(self.match).flatten[self.idx]
+    self.value = txt.scan(self.match).flatten[self.idx]
     end
     self.evaluated = true
-    if self.required == true && (self.value.nil? || self.value.to_s.empty?)
-      raise Puppet::Error, "Fact: #{self.name} is required but didn't evaluate to a proper Value"
-    end
+    raise Puppet::Error, "Fact: #{self.name} is required but didn't evaluate to a proper Value" if self.required == true && (self.value.nil? || self.value.to_s.empty?)
   end
 end

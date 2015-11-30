@@ -1,7 +1,7 @@
 require 'json'
 
 # Base class for all possible facts
-module PuppetX::Brocade::PossibleFacts::Custom
+module Puppet::Util::NetworkDevice::Brocade_fos::PossibleFacts::Custom
   def self.register(base)
 
     fcport = base.facts['FC Ports'].value
